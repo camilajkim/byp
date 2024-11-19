@@ -212,7 +212,7 @@
         let totalInquiriesCount = 0; /* 전체 문의 수 */
 
         async function fetchCSV() { /* CSV 파일 가져오기 함수 */
-            const response = await fetch('https://raw.githubusercontent.com/haseungsong/Kotra/main/TEST%20DB.csv'); /* CSV 파일 요청 */
+            const response = await fetch('https://raw.githubusercontent.com/camilajkim/byp/main/TEST%20DB.csv'); /* CSV 파일 요청 */
             const data = await response.text(); /* 텍스트 형식으로 데이터 가져오기 */
             return data; /* 데이터 반환 */
         }
