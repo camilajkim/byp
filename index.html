@@ -124,12 +124,15 @@
         let csvData;
         const correctPassword = "kotra1234!"; // :흰색_확인_표시: 비밀번호 설정
         async function fetchCSV() {
-            const response = await fetch('https://raw.githubusercontent.com/haseungsong/Kotra/main/TEST%20DB.csv');
-            return await response.text();
+            const response = await fetch('https://raw.githubusercontent.com/camilajkim/byp/main/TEST%20DB.csv');
+            const arrayBuffer = await response.arrayBuffer();
+            const decoder = new TextDecoder('utf-8'); // UTF-8로 변환
+            return decoder.decode(arrayBuffer);
         }
         function parseCSV(data) {
             return new Promise((resolve) => {
                 Papa.parse(data, {
+                    encoding: "UTF-8", // UTF-8 강제 적용
                     complete: function(results) {
                         resolve(results.data);
                     }
@@ -140,19 +143,19 @@
             const data = await fetchCSV();
             csvData = await parseCSV(data);
         }
-        function searchCSV() {
+                function searchCSV() {
             const query = document.getElementById('search-input').value.toLowerCase().trim();
             const category = document.getElementById('search-category').value;
             const year = document.getElementById('search-year').value;
             const headers = csvData[0].map(header =>
                 header.replace("Carimbo de data/hora", "DATE")
-                      .replace("a. Raz??o Social (Nome completo do CNPJ)", "COMPANY NAME")
-                      .replace("b C??digo NCM (Pelo menos 6 d??gitos, sem \"\")", "HS CODE")
+                      .replace("a. Razão Social (Nome completo do CNPJ)", "COMPANY NAME")
+                      .replace("b Código NCM (Pelo menos 6 dígitos, sem \"\")", "HS CODE")
                       .replace("a. Produto de interesse", "Product 1")
                       .replace("b. Produto de interesse", "Product 2")
                       .replace("e. Qual o perfil da busca de fornecedores?", "TYPE")
                       .replace("f. Nome da empresa Coreana", "KOREAN COMPANY")
-                      .replace("b C??digo NCM  (Pelo menos 6 d??gitos, sem \"\")", "HS CODE")
+                      .replace("b Código NCM  (Pelo menos 6 dígitos, sem \"\")", "HS CODE")
             );
             const dateColumnIndex = headers.indexOf("DATE");
             if (dateColumnIndex === -1) {
@@ -204,7 +207,7 @@
             });
         }
         function checkPassword() {
-            const password = prompt(":자물쇠: Please enter the password:");
+            const password = prompt("Please enter the password:");
             if (password === correctPassword) {
                 document.getElementById('search-container').style.display = 'flex';
                 document.querySelector('.table-container').style.display = 'block';
